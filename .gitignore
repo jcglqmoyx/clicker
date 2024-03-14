@@ -1,0 +1,9 @@
+.idea
+.vscode
+
+/target
+
+**/.DS_Store
+**/._*
+
+app.db

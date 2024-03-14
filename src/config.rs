@@ -1,0 +1,1 @@
+pub(crate) const SQLITE_FILE_PATH: &str = "app.db";
