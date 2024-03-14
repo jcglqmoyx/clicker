@@ -6,7 +6,7 @@ use fltk::prelude::{InputExt, WidgetBase, WidgetExt};
 use crate::global::count::{CLICK_COUNT, COUNTER_ENABLED};
 
 pub(crate) fn toggle_click_counter(button: &mut CheckButton) {
-    button.set_callback(|button| unsafe {
+    button.set_callback(|_| unsafe {
         COUNTER_ENABLED = !COUNTER_ENABLED;
     });
 }

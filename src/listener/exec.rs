@@ -135,11 +135,10 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
             if now - max(LAST_TIME_RECORD_HOT_KEY_CHANGED, LAST_TIME_KEY_PRESSED) < 500 {
                 continue;
             }
-            let mut enigo = get_enigo_instance();
+            let enigo = get_enigo_instance();
             let location = enigo.location().unwrap();
 
             EVENTS.push(Event {
-                id: 0,
                 x: location.0,
                 y: location.1,
                 button: BUTTON_TO_CLICK,
