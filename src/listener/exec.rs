@@ -58,9 +58,9 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                         Mode::OrdinaryMode => {
                             for _ in 0..CLICK_COUNT {
                                 if STATUS_OF_CLICKER == 1 {
-                                    let _ = enigo.button(BUTTON_TO_CLICK, Click);
                                     STATUS_BUTTON.set_label_color(Color::Blue);
-                                    STATUS_BUTTON.set_label("Clicking");
+                                    STATUS_BUTTON.set_label("Clicking..");
+                                    let _ = enigo.button(BUTTON_TO_CLICK, Click);
                                 } else {
                                     STATUS_BUTTON.set_label_color(Color::Red);
                                     STATUS_BUTTON.set_label("Stopped clicking");
@@ -68,7 +68,7 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                                 }
                                 if STATUS_OF_CLICKER == 1 {
                                     STATUS_BUTTON.set_label_color(Color::Blue);
-                                    STATUS_BUTTON.set_label("Clicking");
+                                    STATUS_BUTTON.set_label("Clicking..");
                                     thread::sleep(Duration::from_millis(100));
                                 } else {
                                     STATUS_BUTTON.set_label_color(Color::Red);
@@ -78,7 +78,7 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                                 if MOUSE_CLICK_TYPE == 2 {
                                     if STATUS_OF_CLICKER == 1 {
                                         STATUS_BUTTON.set_label_color(Color::Blue);
-                                        STATUS_BUTTON.set_label("Clicking");
+                                        STATUS_BUTTON.set_label("Clicking..");
                                         let _ = enigo.button(BUTTON_TO_CLICK, Click);
                                     } else {
                                         STATUS_BUTTON.set_label_color(Color::Red);
@@ -88,7 +88,7 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                                 }
                                 if STATUS_OF_CLICKER == 1 {
                                     STATUS_BUTTON.set_label_color(Color::Blue);
-                                    STATUS_BUTTON.set_label("Clicking");
+                                    STATUS_BUTTON.set_label("Clicking..");
                                     thread::sleep(Duration::from_millis(TIME_INTERVAL));
                                 } else {
                                     STATUS_BUTTON.set_label_color(Color::Red);
@@ -105,7 +105,7 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                                 for event in &EVENTS {
                                     if STATUS_OF_CLICKER == 1 {
                                         STATUS_BUTTON.set_label_color(Color::Blue);
-                                        STATUS_BUTTON.set_label("Clicking");
+                                        STATUS_BUTTON.set_label("Clicking..");
                                         let _ = enigo.move_mouse(event.x, event.y, Abs);
                                     } else {
                                         working = false;
@@ -115,7 +115,7 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                                     }
                                     if STATUS_OF_CLICKER == 1 {
                                         STATUS_BUTTON.set_label_color(Color::Blue);
-                                        STATUS_BUTTON.set_label("Clicking");
+                                        STATUS_BUTTON.set_label("Clicking..");
                                         thread::sleep(Duration::from_millis(50));
                                     } else {
                                         working = false;
@@ -125,7 +125,7 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                                     }
                                     if STATUS_OF_CLICKER == 1 {
                                         STATUS_BUTTON.set_label_color(Color::Blue);
-                                        STATUS_BUTTON.set_label("Clicking");
+                                        STATUS_BUTTON.set_label("Clicking..");
                                         let _ = enigo.button(event.button, Click);
                                     } else {
                                         working = false;
@@ -136,7 +136,7 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                                     if event.click_type == 2 {
                                         if STATUS_OF_CLICKER == 1 {
                                             STATUS_BUTTON.set_label_color(Color::Blue);
-                                            STATUS_BUTTON.set_label("Clicking");
+                                            STATUS_BUTTON.set_label("Clicking..");
                                             thread::sleep(Duration::from_millis(100));
                                         } else {
                                             working = false;
@@ -146,7 +146,7 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                                         }
                                         if STATUS_OF_CLICKER == 1 {
                                             STATUS_BUTTON.set_label_color(Color::Blue);
-                                            STATUS_BUTTON.set_label("Clicking");
+                                            STATUS_BUTTON.set_label("Clicking..");
                                             let _ = enigo.button(event.button, Click);
                                         } else {
                                             working = false;
@@ -157,7 +157,7 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                                     }
                                     if STATUS_OF_CLICKER == 1 {
                                         STATUS_BUTTON.set_label_color(Color::Blue);
-                                        STATUS_BUTTON.set_label("Clicking");
+                                        STATUS_BUTTON.set_label("Clicking..");
                                         thread::sleep(Duration::from_millis(event.sleep));
                                     } else {
                                         working = false;
@@ -189,6 +189,9 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
             if now - max(LAST_TIME_RECORD_HOT_KEY_CHANGED, LAST_TIME_KEY_PRESSED) < 500 {
                 continue;
             }
+
+            STATUS_BUTTON.set_label("Recording..");
+            STATUS_BUTTON.set_label_color(Color::Yellow);
             let enigo = get_enigo_instance();
             let location = enigo.location().unwrap();
 
@@ -211,6 +214,8 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
             COUNT_RECORD_INPUT.set_value(&EVENTS.len().to_string());
 
             LAST_TIME_KEY_PRESSED = now;
+            STATUS_BUTTON.set_label("Stopped clicking");
+            STATUS_BUTTON.set_label_color(Color::Red);
         }
         thread::sleep(Duration::from_millis(20));
     }
