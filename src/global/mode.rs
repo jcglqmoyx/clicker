@@ -13,3 +13,5 @@ pub(crate) static mut BUTTON_TO_CLICK: Button = Button::Left;
 
 // 1: single click, 2: double click
 pub(crate) static mut MOUSE_CLICK_TYPE: u8 = 1;
+
+pub(crate) static mut PLAY_RECORD_SOUND: bool = true;

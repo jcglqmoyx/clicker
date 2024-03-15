@@ -12,3 +12,13 @@ pub(crate) fn toggle_click_mode(button: &mut CheckButton) {
         }
     });
 }
+
+pub(crate) fn toggle_play_record_sound(button: &mut CheckButton) {
+    button.set_callback(|_| unsafe {
+        if crate::global::mode::PLAY_RECORD_SOUND {
+            crate::global::mode::PLAY_RECORD_SOUND = false;
+        } else {
+            crate::global::mode::PLAY_RECORD_SOUND = true;
+        }
+    });
+}
