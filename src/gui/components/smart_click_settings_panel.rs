@@ -5,6 +5,7 @@ use fltk::group::{Pack, PackType};
 use fltk::prelude::{GroupExt, WidgetBase, WidgetExt};
 
 use crate::global::click::COUNT_RECORD_INPUT;
+use crate::register::record::on_clear_record_button_clicked;
 use crate::register::smart_click::toggle_click_mode;
 
 pub unsafe fn smart_click_settings_panel() -> Pack {
@@ -29,10 +30,11 @@ pub unsafe fn smart_click_settings_panel() -> Pack {
     let mut record_operation_panel = Pack::new(50, 400, 100, 30, "");
     record_operation_panel.set_type(PackType::Horizontal);
     record_operation_panel.set_spacing(5);
-    let clear_button = Button::new(50, 400, 60, 20, "Clear");
+    let mut clear_record_button = Button::new(50, 400, 60, 20, "Clear");
+    on_clear_record_button_clicked(&mut clear_record_button);
     let save_button = Button::new(50, 450, 60, 20, "Save");
     let load_button = Button::new(50, 500, 60, 20, "Load");
-    record_operation_panel.add(&clear_button);
+    record_operation_panel.add(&clear_record_button);
     record_operation_panel.add(&save_button);
     record_operation_panel.add(&load_button);
     record_operation_panel.end();
