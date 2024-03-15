@@ -6,6 +6,8 @@ use fltk::prelude::{GroupExt, InputExt, WidgetBase, WidgetExt};
 use fltk::window::Window;
 
 use crate::global::click::{COUNT_RECORD_INPUT, EVENTS};
+use crate::persistence::dao::record::add_record;
+use crate::persistence::entity::record::Record;
 use crate::utils::audio::play_audio;
 
 static mut SAVE_RECORD_WINDOW_OPENED: bool = false;
@@ -62,7 +64,8 @@ pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
                     return;
                 }
 
-                // save_to_database(&title, &description, &content);
+                let record = Record::new(0, title, description, EVENTS.clone());
+                let _ = add_record(record);
 
                 save_window.hide();
                 SAVE_RECORD_WINDOW_OPENED = false;

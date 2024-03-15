@@ -1,28 +1,43 @@
-use std::fmt::Debug;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug)]
+mod button_serde {
+    use enigo::Button;
+    use serde::{Deserialize, Deserializer, Serializer};
+
+    pub fn serialize<S>(button: &Button, serializer: S) -> Result<S::Ok, S::Error>
+        where
+            S: Serializer,
+    {
+        let button = match button {
+            Button::Left => "Left",
+            Button::Middle => "Middle",
+            Button::Right => "Right",
+            _ => "Invalid button"
+        };
+        serializer.serialize_str(button)
+    }
+
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Button, D::Error>
+        where
+            D: Deserializer<'de>,
+    {
+        let button_str = String::deserialize(deserializer)?;
+        match button_str.as_str() {
+            "Left" => Ok(Button::Left),
+            "Middle" => Ok(Button::Middle),
+            "Right" => Ok(Button::Right),
+            _ => Err(serde::de::Error::custom("Invalid button value")),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub(crate) struct Event {
     pub(crate) x: i32,
     pub(crate) y: i32,
+    #[serde(with = "button_serde")]
     pub(crate) button: enigo::Button,
     pub(crate) click_type: u8,
     pub(crate) sleep: u64,
 }
 
-pub(crate) struct Record {
-    pub(crate) id: i32,
-    pub(crate) title: String,
-    pub(crate) description: String,
-    pub(crate) events: Vec<Event>,
-}
-
-impl Record {
-    pub(crate) fn new(id: i32, title: String, description: String, events: Vec<Event>) -> Self {
-        Self {
-            id,
-            title,
-            description,
-            events,
-        }
-    }
-}
