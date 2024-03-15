@@ -152,16 +152,9 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
 
             if PLAY_RECORD_SOUND {
                 let (_stream, stream_handle) = OutputStream::try_default().unwrap();
-
-                // Load a sound from a file, using a path relative to Cargo.toml
-                let file = BufReader::new(File::open("./record_sound.mp3").unwrap());
-
-                // Decode that sound file into a source
+                let file = BufReader::new(File::open("./resources/audio/record_sound.mp3").unwrap());
                 let source = Decoder::new(file).unwrap();
-
-                // Play the sound directly on the device
                 stream_handle.play_raw(source.convert_samples()).unwrap();
-
                 thread::sleep(Duration::from_millis(300));
             }
 
