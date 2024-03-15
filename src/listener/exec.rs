@@ -5,6 +5,7 @@ use std::io::BufReader;
 use device_query::{DeviceQuery, DeviceState, Keycode};
 use enigo::{Direction::Click, Mouse};
 use enigo::Coordinate::Abs;
+use fltk::prelude::InputExt;
 use rodio::{Decoder, OutputStream, source::Source};
 
 use crate::{
@@ -22,6 +23,7 @@ use crate::{
         time::timestamp,
     },
 };
+use crate::global::click::COUNT_RECORD_INPUT;
 use crate::global::mode::PLAY_RECORD_SOUND;
 use crate::persistence::entity::event::Event;
 
@@ -157,6 +159,8 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                 stream_handle.play_raw(source.convert_samples()).unwrap();
                 thread::sleep(Duration::from_millis(300));
             }
+
+            COUNT_RECORD_INPUT.set_value(&EVENTS.len().to_string());
 
             LAST_TIME_KEY_PRESSED = now;
         }

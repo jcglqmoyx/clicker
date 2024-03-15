@@ -2,12 +2,12 @@ use fltk::button::Button;
 use fltk::button::CheckButton;
 use fltk::frame::Frame;
 use fltk::group::{Pack, PackType};
-use fltk::input::Input;
 use fltk::prelude::{GroupExt, WidgetBase, WidgetExt};
 
+use crate::global::click::COUNT_RECORD_INPUT;
 use crate::register::smart_click::toggle_click_mode;
 
-pub fn smart_click_settings_panel() -> Pack {
+pub unsafe fn smart_click_settings_panel() -> Pack {
     let mut panel = Pack::new(50, 350, 200, 120, "");
     panel.set_spacing(10);
     panel.set_type(PackType::Vertical);
@@ -22,12 +22,8 @@ pub fn smart_click_settings_panel() -> Pack {
     record_count_panel.set_type(PackType::Horizontal);
     record_count_panel.set_spacing(5);
     let records_label = Frame::new(50, 330, 60, 0, "Records");
-    let mut count_record_input = Input::new(50, 300, 60, 0, "");
-    count_record_input.deactivate();
-    let edit_button = Button::new(50, 400, 60, 0, "Edit");
+    COUNT_RECORD_INPUT.deactivate();
     record_count_panel.add(&records_label);
-    record_count_panel.add(&count_record_input);
-    record_count_panel.add(&edit_button);
     record_count_panel.end();
 
     let mut record_operation_panel = Pack::new(50, 400, 100, 30, "");
