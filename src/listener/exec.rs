@@ -28,6 +28,7 @@ use crate::global::click::COUNT_RECORD_INPUT;
 use crate::global::mode::PLAY_RECORD_SOUND;
 use crate::global::status::STATUS_BUTTON;
 use crate::persistence::entity::event::Event;
+use crate::utils::audio::play_audio;
 
 pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
     loop {
@@ -204,11 +205,7 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
             });
 
             if PLAY_RECORD_SOUND {
-                let (_stream, stream_handle) = OutputStream::try_default().unwrap();
-                let file = BufReader::new(File::open("./resources/audio/record_sound.mp3").unwrap());
-                let source = Decoder::new(file).unwrap();
-                stream_handle.play_raw(source.convert_samples()).unwrap();
-                thread::sleep(Duration::from_millis(300));
+                play_audio("./resources/audio/record_sound.mp3", 300);
             }
 
             COUNT_RECORD_INPUT.set_value(&EVENTS.len().to_string());
