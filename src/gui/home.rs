@@ -24,6 +24,15 @@ pub fn window() -> Window {
     let help_and_about_panel = help_and_about_panel();
     let status_panel = status_panel();
 
+    window.add(&mouse_panel);
+    window.add(&count_click_panel);
+    window.add(&time_interval_panel);
+    window.add(&additional_settings_panel);
+    window.add(&hotkey_settings_panel);
+    window.add(&smart_click_settings_panel);
+    window.add(&help_and_about_panel);
+    window.add(&status_panel);
+
     window.draw(move |_| {
         draw_border(&mouse_panel, 10, 10, 10, 20);
         draw_border(&count_click_panel, 10, 10, 20, 20);
