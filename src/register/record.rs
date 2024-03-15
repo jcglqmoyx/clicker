@@ -20,7 +20,7 @@ pub(crate) fn on_clear_record_button_clicked(button: &mut button::Button) {
 
 pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
     button.set_callback(move |_| unsafe {
-        if unsafe { SAVE_RECORD_WINDOW_OPENED } {
+        if SAVE_RECORD_WINDOW_OPENED {
             return;
         }
         SAVE_RECORD_WINDOW_OPENED = true;
@@ -43,8 +43,8 @@ pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
             }
         });
 
-        let mut title_input = Input::new(100, 20, 260, 30, "Title:");
-        let mut description_input = Input::new(100, 60, 260, 30, "Description:");
+        let title_input = Input::new(100, 20, 260, 30, "Title:");
+        let description_input = Input::new(100, 60, 260, 30, "Description:");
         let mut show_record_count_input = IntInput::new(100, 100, 260, 30, "Records:");
         show_record_count_input.set_value(&EVENTS.len().to_string());
         show_record_count_input.deactivate();
@@ -65,7 +65,7 @@ pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
                 // save_to_database(&title, &description, &content);
 
                 save_window.hide();
-                unsafe { SAVE_RECORD_WINDOW_OPENED = false; }
+                SAVE_RECORD_WINDOW_OPENED = false;
             }
         });
 

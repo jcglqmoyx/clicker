@@ -1,13 +1,10 @@
 use std::{cmp::max, thread, time::Duration};
-use std::fs::File;
-use std::io::BufReader;
 
 use device_query::{DeviceQuery, DeviceState, Keycode};
 use enigo::{Direction::Click, Mouse};
 use enigo::Coordinate::Abs;
 use fltk::enums::Color;
 use fltk::prelude::{InputExt, WidgetExt};
-use rodio::{Decoder, OutputStream, source::Source};
 
 use crate::{
     global::{
