@@ -1,4 +1,4 @@
-use fltk::enums::{Color, Font};
+use fltk::enums::{Color};
 use fltk::group::Pack;
 use fltk::prelude::{GroupExt, WidgetBase, WidgetExt};
 
