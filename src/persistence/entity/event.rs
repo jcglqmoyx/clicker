@@ -31,7 +31,7 @@ mod button_serde {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub(crate) struct Event {
     pub(crate) x: i32,
     pub(crate) y: i32,

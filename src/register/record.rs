@@ -51,7 +51,6 @@ pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
         });
 
         let title_input = Input::new(100, 20, 260, 30, "Title:");
-        let description_input = Input::new(100, 60, 260, 30, "Description:");
         let mut show_record_count_input = IntInput::new(100, 100, 260, 30, "Records:");
         show_record_count_input.set_value(&EVENTS.len().to_string());
         show_record_count_input.deactivate();
@@ -63,9 +62,8 @@ pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
             let mut save_window = save_record_window.clone();
             move |_| {
                 let title = title_input.value();
-                let description = description_input.value();
 
-                if title.is_empty() || description.is_empty() || EVENTS.is_empty() {
+                if title.is_empty() || EVENTS.is_empty() {
                     return;
                 }
 
@@ -111,6 +109,13 @@ pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
             scroll.add(&frame);
             scroll.add(&load_record_button);
             scroll.add(&delete_record_button);
+
+            let mut load_record_button_clone = load_record_button.clone();
+            let record_clone = record.clone();
+            load_record_button_clone.set_callback(move |_| unsafe {
+                EVENTS = record_clone.events.clone();
+                COUNT_RECORD_INPUT.set_value(&EVENTS.len().to_string());
+            });
 
 
             let mut frame_clone = frame.clone();
