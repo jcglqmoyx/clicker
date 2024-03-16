@@ -73,7 +73,7 @@ pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
                 let _ = add_record(record);
 
                 if ENABLE_SOUND_EFFECT {
-                    play_audio("./resources/audio/save_record_success.mp3", 1500);
+                    play_audio("./resources/audio/save_record_success.mp3", 500);
                 }
 
 
