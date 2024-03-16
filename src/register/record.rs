@@ -68,9 +68,9 @@ pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
                 let record = Record::new(title, EVENTS.clone());
                 let _ = add_record(record);
 
+
                 save_window.hide();
                 SAVE_RECORD_WINDOW_OPENED = false;
-                println!("saved");
             }
         });
 
@@ -111,7 +111,6 @@ pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
 
             let record_clone = record.clone();
             delete_record_button.set_callback(move |_| {
-                println!("Deleting {:?}", record_clone);
 
             });
         }

@@ -22,7 +22,7 @@ use crate::{
     },
 };
 use crate::global::click::COUNT_RECORD_INPUT;
-use crate::global::mode::PLAY_RECORD_SOUND;
+use crate::global::mode::ENABLE_SOUND_EFFECT;
 use crate::global::status::STATUS_BUTTON;
 use crate::persistence::entity::event::Event;
 use crate::utils::audio::play_audio;
@@ -201,7 +201,7 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
                 sleep: TIME_INTERVAL,
             });
 
-            if PLAY_RECORD_SOUND {
+            if ENABLE_SOUND_EFFECT {
                 play_audio("./resources/audio/record_sound.mp3", 300);
             }
 
