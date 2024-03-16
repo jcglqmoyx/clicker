@@ -11,7 +11,7 @@ use crate::global::mode::ENABLE_SOUND_EFFECT;
 use crate::persistence::dao::record;
 use crate::persistence::dao::record::{add_record, list_records};
 use crate::persistence::entity::record::Record;
-use crate::utils::audio::play_audio;
+use crate::utils::audio::{play_clear_record_sound, play_save_record_success_sound};
 
 static mut SAVE_RECORD_WINDOW_OPENED: bool = false;
 
@@ -20,7 +20,7 @@ pub(crate) fn on_clear_record_button_clicked(button: &mut button::Button) {
         EVENTS.clear();
         COUNT_RECORD_INPUT.set_value("0");
         if ENABLE_SOUND_EFFECT {
-            play_audio("./resources/audio/clear_record_sound.mp3", 300);
+            play_clear_record_sound();
         }
     });
 }
@@ -71,7 +71,7 @@ pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
                 let _ = add_record(record);
 
                 if ENABLE_SOUND_EFFECT {
-                    play_audio("./resources/audio/save_record_success.mp3", 500);
+                    play_save_record_success_sound();
                 }
 
 
