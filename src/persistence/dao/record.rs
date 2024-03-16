@@ -60,6 +60,5 @@ fn test_add_record() {
 #[test]
 fn test_list_records() {
     let records = list_records().unwrap();
-    println!("{:#?}", records);
     assert_ne!(records.len(), 0);
 }
