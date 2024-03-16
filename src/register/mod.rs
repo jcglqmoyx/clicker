@@ -5,3 +5,4 @@ pub(crate) mod smart_click;
 pub(crate) mod time;
 pub(crate) mod count;
 pub(crate) mod record;
+pub(crate) mod help;
