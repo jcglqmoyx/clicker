@@ -96,7 +96,7 @@ pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
 
 pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
     button.set_callback(|_| {
-        let mut load_window = Window::new(200, 200, 400, 300, "Load");
+        let mut load_record_window = Window::new(200, 200, 400, 300, "Load");
 
         let records = list_records().unwrap();
 
@@ -120,8 +120,9 @@ pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
             delete_record_button.set_callback(move |_| {});
         }
         scroll.end();
+        load_record_window.add(&scroll);
 
-        load_window.end();
-        load_window.show();
+        load_record_window.end();
+        load_record_window.show();
     });
 }
