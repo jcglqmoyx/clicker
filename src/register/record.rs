@@ -97,12 +97,9 @@ pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
             let mut frame = Frame::new(80, 30 + 30 * i as i32, 200, 30, record.title.as_str());
             let mut btn = Button::new(290, 30 + 30 * i as i32, 80, 30, "Delete");
 
-            // Clone record for the closure
             let record_clone = record.clone();
             btn.set_callback(move |_| {
-                // Delete the record from the database using record_clone
                 println!("Deleting {:?}", record_clone);
-                // Then fetch and reload the records from the database
             });
         }
 
