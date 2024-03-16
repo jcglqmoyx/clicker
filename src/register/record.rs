@@ -104,8 +104,16 @@ pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
             scroll.add(&delete_record_button);
 
             let record_clone = record.clone();
-            load_record_button.set_callback(move |_| {
+            load_record_button.set_callback(move |_| unsafe {
+                println!("Loading {:?}", record_clone);
+                EVENTS = record.events;
+                COUNT_RECORD_INPUT.set_value(&EVENTS.len().to_string());
+            });
+
+            let record_clone = record.clone();
+            delete_record_button.set_callback(move |_| {
                 println!("Deleting {:?}", record_clone);
+
             });
         }
         scroll.end();
