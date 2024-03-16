@@ -7,7 +7,6 @@ edition = "2021"
 [[bin]]
 name = "clicker"
 path = "src/main.rs"
-windows_subsystem = "windows"
 
 [dependencies]
 fltk = "1.4.26"
