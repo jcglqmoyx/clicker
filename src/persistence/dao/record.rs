@@ -12,8 +12,6 @@ pub(crate) fn add_record(record: Record) -> Result<(), Box<dyn error::Error>> {
         "INSERT INTO record (title, events) VALUES (?1, ?2)",
         params![record.title, events],
     )?;
-    println!("{}", x);
-    println!("Record added successfully");
     Ok(())
 }
 
