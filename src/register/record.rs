@@ -99,6 +99,9 @@ pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
             let frame = Frame::new(20, 30 + 30 * i as i32, 200, 30, record.title.as_str());
             let mut load_record_button = Button::new(200, 30 + 30 * i as i32, 80, 30, "Load");
             let mut delete_record_button = Button::new(290, 30 + 30 * i as i32, 80, 30, "Delete");
+            scroll.add(&frame);
+            scroll.add(&load_record_button);
+            scroll.add(&delete_record_button);
 
             let record_clone = record.clone();
             load_record_button.set_callback(move |_| {
