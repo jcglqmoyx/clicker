@@ -7,6 +7,7 @@ use fltk::prelude::{GroupExt, InputExt, WidgetBase, WidgetExt};
 use fltk::window::Window;
 
 use crate::global::click::{COUNT_RECORD_INPUT, EVENTS};
+use crate::global::mode::ENABLE_SOUND_EFFECT;
 use crate::persistence::dao::record::{add_record, list_records};
 use crate::persistence::entity::record::Record;
 use crate::utils::audio::play_audio;
@@ -17,7 +18,9 @@ pub(crate) fn on_clear_record_button_clicked(button: &mut button::Button) {
     button.set_callback(|_| unsafe {
         EVENTS.clear();
         COUNT_RECORD_INPUT.set_value("0");
-        play_audio("./resources/audio/clear_record_sound.mp3", 300);
+        if ENABLE_SOUND_EFFECT {
+            play_audio("./resources/audio/clear_record_sound.mp3", 300);
+        }
     });
 }
 
@@ -68,6 +71,10 @@ pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
                 let record = Record::new(title, EVENTS.clone());
                 let _ = add_record(record);
 
+                if ENABLE_SOUND_EFFECT {
+                    play_audio("./resources/audio/save_record_success.mp3", 1500);
+                }
+
 
                 save_window.hide();
                 SAVE_RECORD_WINDOW_OPENED = false;
@@ -110,9 +117,7 @@ pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
             });
 
             let record_clone = record.clone();
-            delete_record_button.set_callback(move |_| {
-
-            });
+            delete_record_button.set_callback(move |_| {});
         }
         scroll.end();
 
