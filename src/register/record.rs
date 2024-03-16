@@ -105,8 +105,7 @@ pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
 
             let record_clone = record.clone();
             load_record_button.set_callback(move |_| unsafe {
-                println!("Loading {:?}", record_clone);
-                EVENTS = record.events;
+                EVENTS = record_clone.events.clone();
                 COUNT_RECORD_INPUT.set_value(&EVENTS.len().to_string());
             });
 

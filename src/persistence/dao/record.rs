@@ -8,7 +8,7 @@ use crate::persistence::entity::record::Record;
 pub(crate) fn add_record(record: Record) -> Result<(), Box<dyn error::Error>> {
     let conn = Connection::open(config::SQLITE_FILE_PATH)?;
     let events = serde_json::to_string(&record.events)?;
-    let x = conn.execute(
+    conn.execute(
         "INSERT INTO record (title, events) VALUES (?1, ?2)",
         params![record.title, events],
     )?;
@@ -23,12 +23,11 @@ pub(crate) fn count_records() -> Result<i64, Box<dyn error::Error>> {
 
 pub(crate) fn list_records() -> Result<Vec<Record>, Box<dyn error::Error>> {
     let conn = Connection::open(config::SQLITE_FILE_PATH)?;
-    let mut stmt = conn.prepare("SELECT id, title, events FROM record")?;
+    let mut stmt = conn.prepare("SELECT title, events FROM record")?;
     let records_iter = stmt.query_map([], |row| {
         Ok(Record {
-            id: row.get(0)?,
-            title: row.get(1)?,
-            events: serde_json::from_str(&row.get::<_, String>(2)?).unwrap_or(Vec::new()),
+            title: row.get(0)?,
+            events: serde_json::from_str(&row.get::<_, String>(1)?).unwrap_or(Vec::new()),
         })
     })?;
 
@@ -42,7 +41,6 @@ pub(crate) fn list_records() -> Result<Vec<Record>, Box<dyn error::Error>> {
 #[test]
 fn test_add_record() {
     let record = Record {
-        id: None,
         title: "title".to_string(),
         events: Vec::new(),
     };

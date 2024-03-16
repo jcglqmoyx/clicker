@@ -8,7 +8,6 @@ pub(crate) fn init() -> Result<(), Box<dyn error::Error>> {
     let conn = Connection::open(config::SQLITE_FILE_PATH)?;
     conn.execute(
         "CREATE TABLE IF NOT EXISTS record (
-                id                 INTEGER PRIMARY KEY,
                 title              TEXT NOT NULL,
                 events             TEXT NOT NULL
             )",
