@@ -1,5 +1,6 @@
 use crate::persistence::entity::event::Event;
 
+#[derive(Debug)]
 pub(crate) struct Record {
     pub(crate) id: i32,
     pub(crate) title: String,

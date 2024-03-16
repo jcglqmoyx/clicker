@@ -1,9 +1,14 @@
+use device_query::Keycode::D;
 use fltk::{app, button};
 use fltk::button::Button;
 use fltk::enums::Event;
+use fltk::frame::Frame;
+use fltk::group::{Pack, Scroll};
 use fltk::input::{Input, IntInput};
+use fltk::output::Output;
 use fltk::prelude::{GroupExt, InputExt, WidgetBase, WidgetExt};
 use fltk::window::Window;
+use rusqlite::Connection;
 
 use crate::global::click::{COUNT_RECORD_INPUT, EVENTS};
 use crate::persistence::dao::record::add_record;
@@ -82,5 +87,30 @@ pub(crate) fn on_save_record_button_clicked(button: &mut Button) {
 
         save_record_window.end();
         save_record_window.show();
+    });
+}
+
+pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
+    button.set_callback(|_| {
+        let mut load_window = Window::new(200, 200, 400, 300, "Load");
+        let mut scroll = Scroll::new(20, 20, 360, 240, "");
+        let mut pack = Pack::default().with_size(360, 0).center_of(&scroll);
+
+        // Retrieve all records from the database
+        // let records = load_from_database();
+
+        // Display the records in the pack
+        // for record in records {
+        //     let mut frame = Frame::default().with_size(340, 100).center_of(&pack);
+        //     let mut title_output = Output::new(10, 10, 320, 20, &record.title);
+        //     let mut description_output = Output::new(10, 40, 320, 20, &record.description);
+        //     let mut content_output = Output::new(10, 70, 320, 20, &record.content);
+        //     frame.end();
+        //     pack.add(&frame);
+        // }
+
+        scroll.end();
+        load_window.end();
+        load_window.show();
     });
 }
