@@ -12,7 +12,7 @@ use crate::gui::components::time_internal_panel::time_interval_panel;
 use crate::utils::border::draw_border;
 
 pub unsafe fn window() -> Window {
-    let mut window = Window::new(100, 100, 550, 550, "Meow Auto Clicker 1.0");
+    let mut window = Window::new(100, 100, 550, 550, "Meow Auto Clicker 3.0");
     window.make_resizable(true);
 
     let mouse_panel = mouse_panel();
