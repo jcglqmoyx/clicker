@@ -8,6 +8,7 @@ use fltk::window::Window;
 
 use crate::global::click::{COUNT_RECORD_INPUT, EVENTS};
 use crate::global::mode::ENABLE_SOUND_EFFECT;
+use crate::persistence::dao::record;
 use crate::persistence::dao::record::{add_record, list_records};
 use crate::persistence::entity::record::Record;
 use crate::utils::audio::play_audio;
@@ -103,22 +104,26 @@ pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
         let mut scroll = fltk::group::Scroll::new(0, 0, 400, 300, "");
 
         for (i, record) in records.into_iter().enumerate() {
-            let frame = Frame::new(20, 30 + 30 * i as i32, 200, 30, record.title.as_str());
+            let mut frame = Frame::new(20, 30 + 30 * i as i32, 200, 30, &*record.title);
             let mut load_record_button = Button::new(200, 30 + 30 * i as i32, 80, 30, "Load");
             let mut delete_record_button = Button::new(290, 30 + 30 * i as i32, 80, 30, "Delete");
+
             scroll.add(&frame);
             scroll.add(&load_record_button);
             scroll.add(&delete_record_button);
 
-            let record_clone = record.clone();
-            load_record_button.set_callback(move |_| unsafe {
-                EVENTS = record_clone.events.clone();
-                COUNT_RECORD_INPUT.set_value(&EVENTS.len().to_string());
-            });
 
-            let record_clone = record.clone();
-            delete_record_button.set_callback(move |_| {});
+            let mut frame_clone = frame.clone();
+            let mut load_record_button_clone = load_record_button.clone();
+            let mut delete_record_button_clone = delete_record_button.clone();
+            delete_record_button.set_callback(move |_| {
+                frame_clone.hide();
+                load_record_button_clone.hide();
+                delete_record_button_clone.hide();
+                let _ = record::delete_record(record.id.unwrap());
+            });
         }
+
         scroll.end();
         load_record_window.add(&scroll);
 
