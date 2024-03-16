@@ -8,7 +8,7 @@ pub(crate) fn on_help_button_clicked(button: &mut fltk::button::Button) {
         if language.contains("zh-CH") {
             let _ = webbrowser::open("https://zhuanlan.zhihu.com/p/687422006");
         } else {
-            let _ = webbrowser::open("https://jcglqmoyx.github.io/clicker#/");
+            let _ = webbrowser::open("https://github.com/jcglqmoyx/clicker");
         }
     });
 }
