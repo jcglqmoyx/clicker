@@ -10,7 +10,6 @@ pub(crate) fn init() -> Result<(), Box<dyn error::Error>> {
         "CREATE TABLE IF NOT EXISTS record (
                 id                 INTEGER PRIMARY KEY,
                 title              TEXT NOT NULL,
-                description        TEXT NOT NULL,
                 events             TEXT NOT NULL
             )",
         [],

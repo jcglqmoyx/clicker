@@ -6,13 +6,14 @@ use crate::config;
 use crate::persistence::entity::record::Record;
 
 pub(crate) fn add_record(record: Record) -> Result<(), Box<dyn error::Error>> {
-    let events = serde_json::to_string(&record.events)?;
     let conn = Connection::open(config::SQLITE_FILE_PATH)?;
-
-    conn.execute(
-        "INSERT INTO record (id, title, description, events) VALUES (?1, ?2, ?3, ?4)",
-        params![record.id, record.title, record.description, events],
+    let events = serde_json::to_string(&record.events)?;
+    let x = conn.execute(
+        "INSERT INTO record (title, events) VALUES (?1, ?2)",
+        params![record.title, events],
     )?;
+    println!("{}", x);
+    println!("Record added successfully");
     Ok(())
 }
 
@@ -29,7 +30,6 @@ pub(crate) fn list_records() -> Result<Vec<Record>, Box<dyn error::Error>> {
         Ok(Record {
             id: row.get(0)?,
             title: row.get(1)?,
-            description: row.get(2)?,
             events: serde_json::from_str(&row.get::<_, String>(3)?).unwrap_or(Vec::new()),
         })
     })?;
@@ -44,9 +44,8 @@ pub(crate) fn list_records() -> Result<Vec<Record>, Box<dyn error::Error>> {
 #[test]
 fn test_add_record() {
     let record = Record {
-        id: 2,
+        id: None,
         title: "title".to_string(),
-        description: "description".to_string(),
         events: Vec::new(),
     };
     assert!(add_record(record).is_ok());
