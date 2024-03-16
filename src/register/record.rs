@@ -104,8 +104,8 @@ pub(crate) fn on_load_record_button_clicked(button: &mut Button) {
         let mut scroll = fltk::group::Scroll::new(0, 0, 400, 300, "");
 
         for (i, record) in records.into_iter().enumerate() {
-            let mut frame = Frame::new(20, 30 + 30 * i as i32, 200, 30, &*record.title);
-            let mut load_record_button = Button::new(200, 30 + 30 * i as i32, 80, 30, "Load");
+            let frame = Frame::new(20, 30 + 30 * i as i32, 200, 30, record.title.as_str());
+            let load_record_button = Button::new(200, 30 + 30 * i as i32, 80, 30, "Load");
             let mut delete_record_button = Button::new(290, 30 + 30 * i as i32, 80, 30, "Delete");
 
             scroll.add(&frame);

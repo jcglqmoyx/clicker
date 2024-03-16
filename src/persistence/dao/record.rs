@@ -15,12 +15,6 @@ pub(crate) fn add_record(record: Record) -> Result<(), Box<dyn error::Error>> {
     Ok(())
 }
 
-pub(crate) fn count_records() -> Result<i64, Box<dyn error::Error>> {
-    let conn = Connection::open(config::SQLITE_FILE_PATH)?;
-    let count = conn.query_row("SELECT COUNT(*) FROM record", [], |row| row.get(0))?;
-    Ok(count)
-}
-
 pub(crate) fn list_records() -> Result<Vec<Record>, Box<dyn error::Error>> {
     let conn = Connection::open(config::SQLITE_FILE_PATH)?;
     let mut stmt = conn.prepare("SELECT id, title, events FROM record")?;
@@ -47,19 +41,20 @@ pub(crate) fn delete_record(id: i32) -> Result<(), Box<dyn error::Error>> {
 
 #[test]
 fn test_add_record() {
-    let record = Record {
+    use crate::persistence::entity::event::Event;
+    let mut record = Record {
         id: None,
-        title: "title".to_string(),
+        title: "delete files".to_string(),
         events: Vec::new(),
     };
+    record.events.push(Event::new(
+        500,
+        200,
+        enigo::Button::Left,
+        1,
+        2000,
+    ));
     assert!(add_record(record).is_ok());
-}
-
-#[test]
-fn test_count_records() {
-    let count = count_records().unwrap();
-    println!("{}", count);
-    assert_ne!(count, 0);
 }
 
 #[test]

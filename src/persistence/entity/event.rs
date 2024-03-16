@@ -41,3 +41,14 @@ pub(crate) struct Event {
     pub(crate) sleep: u64,
 }
 
+impl Event {
+    pub(crate) fn new(x: i32, y: i32, button: enigo::Button, click_type: u8, sleep: u64) -> Event {
+        Event {
+            x,
+            y,
+            button,
+            click_type,
+            sleep,
+        }
+    }
+}

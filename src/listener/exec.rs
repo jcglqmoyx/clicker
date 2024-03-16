@@ -178,13 +178,13 @@ pub(crate) static mut EVENT_LISTENER: fn() = || unsafe {
             let enigo = get_enigo_instance();
             let location = enigo.location().unwrap();
 
-            EVENTS.push(Event {
-                x: location.0,
-                y: location.1,
-                button: BUTTON_TO_CLICK,
-                click_type: MOUSE_CLICK_TYPE,
-                sleep: TIME_INTERVAL,
-            });
+            EVENTS.push(Event::new(
+                location.0,
+                location.1,
+                BUTTON_TO_CLICK,
+                MOUSE_CLICK_TYPE,
+                TIME_INTERVAL,
+            ));
 
             if ENABLE_SOUND_EFFECT {
                 play_audio("./resources/audio/record_sound.mp3", 300);
