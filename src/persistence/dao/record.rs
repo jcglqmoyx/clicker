@@ -6,7 +6,7 @@ use crate::config;
 use crate::persistence::entity::record::Record;
 
 pub(crate) fn add_record(record: Record) -> Result<(), Box<dyn error::Error>> {
-    let conn = Connection::open(config::SQLITE_FILE_PATH)?;
+    let conn = Connection::open(config::get_database_path())?;
     let events = serde_json::to_string(&record.events)?;
     conn.execute(
         "INSERT INTO record (title, events) VALUES (?1, ?2)",
@@ -16,7 +16,7 @@ pub(crate) fn add_record(record: Record) -> Result<(), Box<dyn error::Error>> {
 }
 
 pub(crate) fn list_records() -> Result<Vec<Record>, Box<dyn error::Error>> {
-    let conn = Connection::open(config::SQLITE_FILE_PATH)?;
+    let conn = Connection::open(config::get_database_path())?;
     let mut stmt = conn.prepare("SELECT id, title, events FROM record")?;
     let records_iter = stmt.query_map([], |row| {
         Ok(Record {
@@ -34,7 +34,7 @@ pub(crate) fn list_records() -> Result<Vec<Record>, Box<dyn error::Error>> {
 }
 
 pub(crate) fn delete_record(id: i32) -> Result<(), Box<dyn error::Error>> {
-    let conn = Connection::open(config::SQLITE_FILE_PATH)?;
+    let conn = Connection::open(config::get_database_path())?;
     conn.execute("DELETE FROM record WHERE id = ?1", params![id])?;
     Ok(())
 }

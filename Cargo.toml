@@ -23,3 +23,4 @@ rodio = "0.17.3"
 
 webbrowser = "0.8.13"
 locale_config = "0.3.0"
+dirs = "5.0.1"
