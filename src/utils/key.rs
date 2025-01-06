@@ -172,6 +172,7 @@ pub(crate) fn get_key_value_in_device_query(key: &Keycode) -> i32 {
         Keycode::Comma => 44,
         Keycode::Dot => 46,
         Keycode::Slash => 47,
+        _ => 0,
     }
 }
 
