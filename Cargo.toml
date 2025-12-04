@@ -10,7 +10,7 @@ name = "clicker"
 path = "src/main.rs"
 
 [dependencies]
-fltk = "1.5.1"
+fltk = "1.5.22"
 
 device_query = "2.1.0"
 enigo = "0.3.0"
