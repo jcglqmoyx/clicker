@@ -14,12 +14,34 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+
+    - name: Cache Cargo dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-
 
     - name: Install system dependencies
       run: |
         brew update
         brew install pkg-config
+
+    - name: Rust toolchain info
+      run: |
+        rustc --version
+        cargo --version
+
+    - name: Show environment info
+      run: |
+        echo "GITHUB event: ${{ github.event_name }}"
+        echo "GITHUB ref: ${{ github.ref }}"
+        echo "GITHUB workspace: ${{ github.workspace }}"
 
     - name: Build (Release)
       run: cargo build --release --verbose
@@ -32,6 +54,7 @@ jobs:
         mkdir -p artifacts
         cp target/release/clicker artifacts/
         ls -la artifacts/
+        file artifacts/clicker
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
@@ -46,17 +69,23 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    - name: Download build artifact
+    - name: Download built artifact
       uses: actions/download-artifact@v4
       with:
         name: clicker-macos-arm64
+        path: .
+
+    - name: Verify artifact
+      run: |
+        ls -la clicker
+        file clicker
+        ./clicker --version 2>&1 || echo "No version flag (ok)"
 
     - name: Get version info
       id: version
       run: |
-        # 使用简短 commit hash 作为版本标识
         SHORT_SHA=$(git rev-parse --short HEAD)
         echo "version=${SHORT_SHA}" >> $GITHUB_OUTPUT
         echo "tag=nightly-${SHORT_SHA}" >> $GITHUB_OUTPUT
@@ -71,5 +100,6 @@ jobs:
         prerelease: true
         generate_release_notes: true
         replace_assets: true
+        draft: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
