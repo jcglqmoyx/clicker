@@ -10,8 +10,10 @@ pub(crate) fn get_database_path() -> PathBuf {
 
 #[test]
 fn test_get_database_path() {
-    use std::path::Path;
-
     let db_path = get_database_path();
-    assert_eq!(db_path, Path::new("/Users/hqc/.clicker.db"));
+    assert_eq!(
+        db_path.file_name().and_then(|s| s.to_str()),
+        Some(".clicker.db")
+    );
+    assert!(db_path.is_absolute() || db_path.starts_with("."));
 }

@@ -1,11 +1,8 @@
 use fltk::misc::Spinner;
 
-use crate::global::click::EVENTS;
-use crate::global::mode::CLICKING_MODE;
-use crate::global::mode::Mode;
-use crate::global::time::TIME_INTERVAL;
+use crate::state::{Mode, STATE};
 
-pub(crate) unsafe fn on_time_interval_change(
+pub(crate) fn on_time_interval_change(
     hour_spinner: &mut Spinner,
     minute_spinner: &mut Spinner,
     second_spinner: &mut Spinner,
@@ -17,11 +14,15 @@ pub(crate) unsafe fn on_time_interval_change(
     let seconds = second_spinner.value() as u64;
     let tenths = tenth_spinner.value() as u64;
     let hundredths = hundredth_spinner.value() as u64;
-    TIME_INTERVAL = hours * 3_600_000 + minutes * 60_000 + seconds * 1_000 + tenths * 100 + hundredths * 10;
-    if CLICKING_MODE == Mode::IntelligentMode {
-        if EVENTS.is_empty() {
+    let interval = hours * 3_600_000 + minutes * 60_000 + seconds * 1_000 + tenths * 100 + hundredths * 10;
+
+    let mut state = STATE.lock().unwrap();
+    state.time_interval = interval;
+    if state.clicking_mode == Mode::IntelligentMode {
+        if state.events.is_empty() {
             return;
         }
-        EVENTS[EVENTS.len() - 1].sleep = TIME_INTERVAL;
+        let last = state.events.len() - 1;
+        state.events[last].sleep = interval;
     }
 }

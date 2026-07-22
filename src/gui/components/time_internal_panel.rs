@@ -70,53 +70,51 @@ pub fn time_interval_panel() -> Pack {
     hundredth_spinner.set_value(0.0);
     spinner_panel.add(&hundredth_spinner);
 
-    unsafe {
-        hour_spinner.set_callback(
-            {
-                let mut hour_spinner_clone = hour_spinner.clone();
-                let mut minute_spinner_clone = minute_spinner.clone();
-                let mut second_spinner_clone = second_spinner.clone();
-                let mut tenth_spinner_clone = tenth_spinner.clone();
-                let mut hundredth_spinner_clone = hundredth_spinner.clone();
-                move |_| on_time_interval_change(&mut hour_spinner_clone, &mut minute_spinner_clone, &mut second_spinner_clone, &mut tenth_spinner_clone, &mut hundredth_spinner_clone)
-            });
-        minute_spinner.set_callback(
-            {
-                let mut hour_spinner_clone = hour_spinner.clone();
-                let mut minute_spinner_clone = minute_spinner.clone();
-                let mut second_spinner_clone = second_spinner.clone();
-                let mut tenth_spinner_clone = tenth_spinner.clone();
-                let mut hundredth_spinner_clone = hundredth_spinner.clone();
-                move |_| on_time_interval_change(&mut hour_spinner_clone, &mut minute_spinner_clone, &mut second_spinner_clone, &mut tenth_spinner_clone, &mut hundredth_spinner_clone)
-            });
-        second_spinner.set_callback(
-            {
-                let mut hour_spinner_clone = hour_spinner.clone();
-                let mut minute_spinner_clone = minute_spinner.clone();
-                let mut second_spinner_clone = second_spinner.clone();
-                let mut tenth_spinner_clone = tenth_spinner.clone();
-                let mut hundredth_spinner_clone = hundredth_spinner.clone();
-                move |_| on_time_interval_change(&mut hour_spinner_clone, &mut minute_spinner_clone, &mut second_spinner_clone, &mut tenth_spinner_clone, &mut hundredth_spinner_clone)
-            });
-        tenth_spinner.set_callback(
-            {
-                let mut hour_spinner_clone = hour_spinner.clone();
-                let mut minute_spinner_clone = minute_spinner.clone();
-                let mut second_spinner_clone = second_spinner.clone();
-                let mut tenth_spinner_clone = tenth_spinner.clone();
-                let mut hundredth_spinner_clone = hundredth_spinner.clone();
-                move |_| on_time_interval_change(&mut hour_spinner_clone, &mut minute_spinner_clone, &mut second_spinner_clone, &mut tenth_spinner_clone, &mut hundredth_spinner_clone)
-            });
-        hundredth_spinner.set_callback(
-            {
-                let mut hour_spinner_clone = hour_spinner.clone();
-                let mut minute_spinner_clone = minute_spinner.clone();
-                let mut second_spinner_clone = second_spinner.clone();
-                let mut tenth_spinner_clone = tenth_spinner.clone();
-                let mut hundredth_spinner_clone = hundredth_spinner.clone();
-                move |_| on_time_interval_change(&mut hour_spinner_clone, &mut minute_spinner_clone, &mut second_spinner_clone, &mut tenth_spinner_clone, &mut hundredth_spinner_clone)
-            });
-    }
+    hour_spinner.set_callback(
+        {
+            let mut hour_spinner_clone = hour_spinner.clone();
+            let mut minute_spinner_clone = minute_spinner.clone();
+            let mut second_spinner_clone = second_spinner.clone();
+            let mut tenth_spinner_clone = tenth_spinner.clone();
+            let mut hundredth_spinner_clone = hundredth_spinner.clone();
+            move |_| on_time_interval_change(&mut hour_spinner_clone, &mut minute_spinner_clone, &mut second_spinner_clone, &mut tenth_spinner_clone, &mut hundredth_spinner_clone)
+        });
+    minute_spinner.set_callback(
+        {
+            let mut hour_spinner_clone = hour_spinner.clone();
+            let mut minute_spinner_clone = minute_spinner.clone();
+            let mut second_spinner_clone = second_spinner.clone();
+            let mut tenth_spinner_clone = tenth_spinner.clone();
+            let mut hundredth_spinner_clone = hundredth_spinner.clone();
+            move |_| on_time_interval_change(&mut hour_spinner_clone, &mut minute_spinner_clone, &mut second_spinner_clone, &mut tenth_spinner_clone, &mut hundredth_spinner_clone)
+        });
+    second_spinner.set_callback(
+        {
+            let mut hour_spinner_clone = hour_spinner.clone();
+            let mut minute_spinner_clone = minute_spinner.clone();
+            let mut second_spinner_clone = second_spinner.clone();
+            let mut tenth_spinner_clone = tenth_spinner.clone();
+            let mut hundredth_spinner_clone = hundredth_spinner.clone();
+            move |_| on_time_interval_change(&mut hour_spinner_clone, &mut minute_spinner_clone, &mut second_spinner_clone, &mut tenth_spinner_clone, &mut hundredth_spinner_clone)
+        });
+    tenth_spinner.set_callback(
+        {
+            let mut hour_spinner_clone = hour_spinner.clone();
+            let mut minute_spinner_clone = minute_spinner.clone();
+            let mut second_spinner_clone = second_spinner.clone();
+            let mut tenth_spinner_clone = tenth_spinner.clone();
+            let mut hundredth_spinner_clone = hundredth_spinner.clone();
+            move |_| on_time_interval_change(&mut hour_spinner_clone, &mut minute_spinner_clone, &mut second_spinner_clone, &mut tenth_spinner_clone, &mut hundredth_spinner_clone)
+        });
+    hundredth_spinner.set_callback(
+        {
+            let mut hour_spinner_clone = hour_spinner.clone();
+            let mut minute_spinner_clone = minute_spinner.clone();
+            let mut second_spinner_clone = second_spinner.clone();
+            let mut tenth_spinner_clone = tenth_spinner.clone();
+            let mut hundredth_spinner_clone = hundredth_spinner.clone();
+            move |_| on_time_interval_change(&mut hour_spinner_clone, &mut minute_spinner_clone, &mut second_spinner_clone, &mut tenth_spinner_clone, &mut hundredth_spinner_clone)
+        });
 
     spinner_panel.end();
 

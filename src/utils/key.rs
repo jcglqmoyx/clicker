@@ -2,7 +2,6 @@ use std::collections::HashSet;
 
 use device_query::Keycode;
 use fltk::enums::Key;
-use once_cell::sync::Lazy;
 
 pub(crate) fn get_key_name_in_fltk(key: i32) -> String {
     if key == 32 {
@@ -11,6 +10,10 @@ pub(crate) fn get_key_name_in_fltk(key: i32) -> String {
         String::from((key as u8 - 32) as char)
     } else if key >= '0' as i32 && key <= '9' as i32 {
         String::from(key as u8 as char)
+    } else if key == 59 {
+        String::from("Semicolon")
+    } else if key == 44 {
+        String::from("Comma")
     } else {
         match Key::from_i32(key) {
             Key::None => String::from("None"),
@@ -167,7 +170,7 @@ pub(crate) fn get_key_value_in_device_query(key: &Keycode) -> i32 {
         Keycode::LeftBracket => 91,
         Keycode::RightBracket => 93,
         Keycode::BackSlash => 92,
-        Keycode::Semicolon => 44,
+        Keycode::Semicolon => 59,
         Keycode::Apostrophe => 39,
         Keycode::Comma => 44,
         Keycode::Dot => 46,
@@ -176,7 +179,7 @@ pub(crate) fn get_key_value_in_device_query(key: &Keycode) -> i32 {
     }
 }
 
-pub(crate) fn get_hotkey_string(set: &Lazy<HashSet<crate::global::hotkey::Key>>) -> String {
+pub(crate) fn get_hotkey_string(set: &HashSet<crate::state::Key>) -> String {
     set.iter()
         .map(|key| key.string_value.clone())
         .collect::<Vec<String>>()

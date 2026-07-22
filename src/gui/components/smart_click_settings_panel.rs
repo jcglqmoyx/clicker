@@ -2,13 +2,15 @@ use fltk::button::Button;
 use fltk::button::CheckButton;
 use fltk::frame::Frame;
 use fltk::group::{Pack, PackType};
+use fltk::input::Input;
 use fltk::prelude::{GroupExt, WidgetBase, WidgetExt};
 
-use crate::global::click::COUNT_RECORD_INPUT;
-use crate::register::record::{on_clear_record_button_clicked, on_load_record_button_clicked, on_save_record_button_clicked};
+use crate::register::record::{
+    on_clear_record_button_clicked, on_load_record_button_clicked, on_save_record_button_clicked,
+};
 use crate::register::smart_click::toggle_click_mode;
 
-pub unsafe fn smart_click_settings_panel() -> Pack {
+pub fn smart_click_settings_panel(count_record_input: Input) -> Pack {
     let mut panel = Pack::new(50, 350, 200, 120, "");
     panel.set_spacing(10);
     panel.set_type(PackType::Vertical);
@@ -23,19 +25,19 @@ pub unsafe fn smart_click_settings_panel() -> Pack {
     record_count_panel.set_type(PackType::Horizontal);
     record_count_panel.set_spacing(5);
     let records_label = Frame::new(50, 330, 60, 0, "Records");
-    COUNT_RECORD_INPUT.deactivate();
     record_count_panel.add(&records_label);
+    record_count_panel.add(&count_record_input);
     record_count_panel.end();
 
     let mut record_operation_panel = Pack::new(50, 400, 100, 30, "");
     record_operation_panel.set_type(PackType::Horizontal);
     record_operation_panel.set_spacing(5);
     let mut clear_record_button = Button::new(50, 400, 60, 20, "Clear");
-    on_clear_record_button_clicked(&mut clear_record_button);
+    on_clear_record_button_clicked(&mut clear_record_button, count_record_input.clone());
     let mut save_record_button = Button::new(50, 450, 60, 20, "Save");
     on_save_record_button_clicked(&mut save_record_button);
     let mut load_record_button = Button::new(50, 500, 60, 20, "Load");
-    on_load_record_button_clicked(&mut load_record_button);
+    on_load_record_button_clicked(&mut load_record_button, count_record_input.clone());
     record_operation_panel.add(&clear_record_button);
     record_operation_panel.add(&save_record_button);
     record_operation_panel.add(&load_record_button);

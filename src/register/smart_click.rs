@@ -1,24 +1,22 @@
 use fltk::button::CheckButton;
-use fltk::prelude::WidgetExt;
+use fltk::prelude::{ButtonExt, WidgetExt};
 
-use crate::global::mode::{CLICKING_MODE, Mode};
+use crate::state::{Mode, STATE};
 
 pub(crate) fn toggle_click_mode(button: &mut CheckButton) {
-    button.set_callback(|_| unsafe {
-        if CLICKING_MODE == Mode::OrdinaryMode {
-            CLICKING_MODE = Mode::IntelligentMode;
-        } else if CLICKING_MODE == Mode::IntelligentMode {
-            CLICKING_MODE = Mode::OrdinaryMode;
-        }
+    button.set_callback(|b| {
+        let mut state = STATE.lock().unwrap();
+        state.clicking_mode = if b.value() {
+            Mode::IntelligentMode
+        } else {
+            Mode::OrdinaryMode
+        };
     });
 }
 
 pub(crate) fn toggle_enable_sound_effect(button: &mut CheckButton) {
-    button.set_callback(|_| unsafe {
-        if crate::global::mode::ENABLE_SOUND_EFFECT {
-            crate::global::mode::ENABLE_SOUND_EFFECT = false;
-        } else {
-            crate::global::mode::ENABLE_SOUND_EFFECT = true;
-        }
+    button.set_callback(|b| {
+        let mut state = STATE.lock().unwrap();
+        state.enable_sound = b.value();
     });
 }

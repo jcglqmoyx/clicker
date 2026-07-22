@@ -1,11 +1,10 @@
 use std::error;
+use std::path::Path;
 
 use rusqlite::Connection;
 
-use crate::config;
-
-pub(crate) fn init() -> Result<(), Box<dyn error::Error>> {
-    let conn = Connection::open(config::get_database_path())?;
+pub(crate) fn init(db_path: &Path) -> Result<(), Box<dyn error::Error>> {
+    let conn = Connection::open(db_path)?;
     conn.execute(
         "CREATE TABLE IF NOT EXISTS record (
                 id                 INTEGER PRIMARY KEY AUTOINCREMENT,

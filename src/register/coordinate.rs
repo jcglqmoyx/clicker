@@ -1,17 +1,26 @@
 use std::thread;
 use std::time::Duration;
+
 use enigo::Mouse;
-use fltk::frame::Frame;
-use fltk::prelude::WidgetExt;
+use fltk::app::Sender;
+
+use crate::state::UiMsg;
 use crate::utils::enigo::get_enigo_instance;
 
-pub(crate) fn on_mouse_move(mut x_coordinate_input: Frame, mut y_coordinate_input: Frame){
+pub(crate) fn on_mouse_move(ui: Sender<UiMsg>) {
     thread::spawn(move || {
-        let enigo = get_enigo_instance();
+        let Some(enigo) = get_enigo_instance() else {
+            // Without input access we can't read the pointer; stop the thread.
+            return;
+        };
         loop {
-            let location = enigo.location().unwrap();
-            x_coordinate_input.set_label(&format!("X: {}", location.0));
-            y_coordinate_input.set_label(&format!("Y: {}", location.1));
+            match enigo.location() {
+                Ok(location) => ui.send(UiMsg::Coordinates {
+                    x: location.0,
+                    y: location.1,
+                }),
+                Err(_) => {}
+            }
             thread::sleep(Duration::from_millis(100));
         }
     });

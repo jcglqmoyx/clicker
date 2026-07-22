@@ -1,12 +1,13 @@
-use fltk::{app, enums};
 use fltk::input::Input;
 use fltk::prelude::{InputExt, WidgetBase, WidgetExt};
-use crate::global::hotkey::{CLICK_HOT_KEY, Key, LAST_TIME_CLICK_HOT_KEY_CHANGED, LAST_TIME_RECORD_HOT_KEY_CHANGED, RECORD_HOT_KEY};
+use fltk::{app, enums};
+
+use crate::state::{Key, STATE};
 use crate::utils::key;
 use crate::utils::key::get_hotkey_string;
 use crate::utils::time::timestamp;
 
-pub(crate) fn register_hot_key(input_widget: &mut Input, hot_key_type:i32) {
+pub(crate) fn register_hot_key(input_widget: &mut Input, hot_key_type: i32) {
     input_widget.handle(move |input, event| match event {
         enums::Event::Enter => {
             input.activate();
@@ -18,40 +19,45 @@ pub(crate) fn register_hot_key(input_widget: &mut Input, hot_key_type:i32) {
             app::redraw();
             true
         }
-        enums::Event::KeyDown => unsafe {
+        enums::Event::KeyDown => {
             let key_int_value = app::event_key().bits();
             let key_name = key::get_key_name_in_fltk(key_int_value);
             let now = timestamp();
 
+            let mut state = STATE.lock().unwrap();
             if hot_key_type == 1 {
-                if now - LAST_TIME_CLICK_HOT_KEY_CHANGED < 100 && CLICK_HOT_KEY.len() < 4 {
-                    CLICK_HOT_KEY.insert(Key::new(key_int_value, key_name));
+                if now - state.last_click_hotkey_changed < 100 && state.click_hotkey.len() < 4 {
+                    state.click_hotkey.insert(Key::new(key_int_value, key_name));
                 } else {
-                    CLICK_HOT_KEY.clear();
-                    CLICK_HOT_KEY.insert(Key::new(key_int_value, key_name));
+                    state.click_hotkey.clear();
+                    state.click_hotkey.insert(Key::new(key_int_value, key_name));
                 }
-                if *CLICK_HOT_KEY == *RECORD_HOT_KEY {
-                    CLICK_HOT_KEY.clear();
+                if state.click_hotkey == state.record_hotkey {
+                    state.click_hotkey.clear();
                     input.set_value("");
                 } else {
-                    input.set_value(&get_hotkey_string(&CLICK_HOT_KEY));
+                    input.set_value(&get_hotkey_string(&state.click_hotkey));
                 }
-                LAST_TIME_CLICK_HOT_KEY_CHANGED = now;
+                state.last_click_hotkey_changed = now;
                 true
             } else if hot_key_type == 2 {
-                if now - LAST_TIME_RECORD_HOT_KEY_CHANGED < 100 && RECORD_HOT_KEY.len() < 4 {
-                    RECORD_HOT_KEY.insert(Key::new(key_int_value, key_name));
+                if now - state.last_record_hotkey_changed < 100 && state.record_hotkey.len() < 4 {
+                    state
+                        .record_hotkey
+                        .insert(Key::new(key_int_value, key_name));
                 } else {
-                    RECORD_HOT_KEY.clear();
-                    RECORD_HOT_KEY.insert(Key::new(key_int_value, key_name));
+                    state.record_hotkey.clear();
+                    state
+                        .record_hotkey
+                        .insert(Key::new(key_int_value, key_name));
                 }
-                if *RECORD_HOT_KEY == *CLICK_HOT_KEY {
-                    RECORD_HOT_KEY.clear();
+                if state.record_hotkey == state.click_hotkey {
+                    state.record_hotkey.clear();
                     input.set_value("");
                 } else {
-                    input.set_value(&get_hotkey_string(&RECORD_HOT_KEY));
+                    input.set_value(&get_hotkey_string(&state.record_hotkey));
                 }
-                LAST_TIME_RECORD_HOT_KEY_CHANGED = now;
+                state.last_record_hotkey_changed = now;
                 true
             } else {
                 false

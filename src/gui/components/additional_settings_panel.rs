@@ -1,3 +1,4 @@
+use fltk::app::Sender;
 use fltk::button::CheckButton;
 use fltk::frame::Frame;
 use fltk::group::{Pack, PackType};
@@ -5,8 +6,9 @@ use fltk::prelude::{ButtonExt, GroupExt, WidgetBase, WidgetExt};
 
 use crate::register::coordinate::on_mouse_move;
 use crate::register::smart_click::toggle_enable_sound_effect;
+use crate::state::UiMsg;
 
-pub fn additional_settings_panel() -> Pack {
+pub fn additional_settings_panel(ui: Sender<UiMsg>) -> (Pack, Frame, Frame) {
     let mut panel = Pack::new(50, 240, 200, 120, "Pointer");
     panel.set_spacing(10);
     panel.set_type(PackType::Vertical);
@@ -17,7 +19,7 @@ pub fn additional_settings_panel() -> Pack {
     let y_coordinate_input = Frame::new(0, 0, 60, 10, "");
     pointer_coordinate_pack.add(&x_coordinate_input);
     pointer_coordinate_pack.add(&y_coordinate_input);
-    on_mouse_move(x_coordinate_input, y_coordinate_input);
+    on_mouse_move(ui);
     pointer_coordinate_pack.end();
 
     let mut freeze_pointer_pack = Pack::new(50, 280, 200, 0, "");
@@ -30,5 +32,5 @@ pub fn additional_settings_panel() -> Pack {
     panel.add(&pointer_coordinate_pack);
     panel.add(&freeze_pointer_pack);
     panel.end();
-    panel
+    (panel, x_coordinate_input, y_coordinate_input)
 }
