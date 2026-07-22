@@ -92,14 +92,10 @@ jobs:
         echo "Binary built from commit: ${SHORT_SHA}"
 
     - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: clicker
         tag_name: nightly-${{ steps.version.outputs.version }}
         name: "Nightly Build (${{ steps.version.outputs.version }})"
         prerelease: true
         generate_release_notes: true
-        replace_assets: true
-        draft: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
