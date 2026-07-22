@@ -1,4 +1,4 @@
-name: Rust
+name: Rust Build and Release
 
 on:
   push:
@@ -11,12 +11,65 @@ env:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --verbose
+
+    - name: Install system dependencies
+      run: |
+        brew update
+        brew install pkg-config
+
+    - name: Build (Release)
+      run: cargo build --release --verbose
+
     - name: Run tests
       run: cargo test --verbose
+
+    - name: Collect artifacts
+      run: |
+        mkdir -p artifacts
+        cp target/release/clicker artifacts/
+        ls -la artifacts/
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: clicker-macos-arm64
+        path: artifacts/clicker
+        retention-days: 7
+
+  release:
+    needs: build
+    runs-on: macos-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Download build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: clicker-macos-arm64
+
+    - name: Get version info
+      id: version
+      run: |
+        # 使用简短 commit hash 作为版本标识
+        SHORT_SHA=$(git rev-parse --short HEAD)
+        echo "version=${SHORT_SHA}" >> $GITHUB_OUTPUT
+        echo "tag=nightly-${SHORT_SHA}" >> $GITHUB_OUTPUT
+        echo "Binary built from commit: ${SHORT_SHA}"
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: clicker
+        tag_name: nightly-${{ steps.version.outputs.version }}
+        name: "Nightly Build (${{ steps.version.outputs.version }})"
+        prerelease: true
+        generate_release_notes: true
+        replace_assets: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
